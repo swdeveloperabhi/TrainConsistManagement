@@ -1,75 +1,63 @@
 import java.util.*;
-import java.util.stream.Collectors;
-
-// ================= Bogie =================
-class Bogie {
-    String name;
-    int capacity;
-
-    Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
-    }
-
-    @Override
-    public String toString() {
-        return name + " -> " + capacity;
-    }
-}
+import java.util.stream.*;
 
 public class TrainConsistManagementApp {
 
+    // ================= GoodsBogie Class =================
+    static class GoodsBogie {
+        String type;
+        String cargo;
+
+        GoodsBogie(String type, String cargo) {
+            this.type = type;
+            this.cargo = cargo;
+        }
+
+        @Override
+        public String toString() {
+            return type + " -> " + cargo;
+        }
+    }
+
     public static void main(String[] args) {
 
-        System.out.println("=== Train Consist Management App ===");
+        System.out.println("==============================================");
+        System.out.println(" UC12 - Safety Compliance Check for Goods Bogies ");
+        System.out.println("==============================================\n");
 
-        // ================= UC10 Example =================
-        List<Bogie> bogies = List.of(
-                new Bogie("Sleeper", 72),
-                new Bogie("AC Chair", 56),
-                new Bogie("First Class", 24),
-                new Bogie("Sleeper", 70)
-        );
+        // Create goods bogie list
+        List<GoodsBogie> goodsBogies = new ArrayList<>();
 
-        int total = calculateTotalCapacity(bogies);
-        System.out.println("\nTotal Capacity: " + total);
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsBogies.add(new GoodsBogie("Open", "Coal"));
+        goodsBogies.add(new GoodsBogie("Box", "Grain"));
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
 
-        // ================= UC11 =================
-        System.out.println("\n--- UC11 Validation ---");
+        // Display bogies
+        System.out.println("Goods Bogies:");
+        for (GoodsBogie b : goodsBogies) {
+            System.out.println(b);
+        }
 
-        String trainId = "TRN-6524";
-        String cargoCode = "PET-FH";
+        // ===== SAFETY CHECK USING STREAM =====
+        boolean isSafe = goodsBogies.stream()
+                .allMatch(b ->
+                        !b.type.equalsIgnoreCase("Cylindrical") ||
+                                b.cargo.equalsIgnoreCase("Petroleum")
+                );
 
-        System.out.println("Train ID Valid: " + isValidTrainID(trainId));
-        System.out.println("Cargo Code Valid: " + isValidCargoCode(cargoCode));
+        // Display result
+        System.out.println("\nSafety Compliance Status: " + isSafe);
+
+        System.out.println("\nUC12 safety validation completed...");
     }
 
-    // ================= UC8 =================
-    public static List<Bogie> filterBogiesByCapacity(List<Bogie> bogies, int threshold) {
-        return bogies.stream()
-                .filter(b -> b.capacity > threshold)
-                .toList();
-    }
-
-    // ================= UC9 =================
-    public static Map<String, List<Bogie>> groupBogiesByType(List<Bogie> bogies) {
-        return bogies.stream()
-                .collect(Collectors.groupingBy(b -> b.name));
-    }
-
-    // ================= UC10 =================
-    public static int calculateTotalCapacity(List<Bogie> bogies) {
-        return bogies.stream()
-                .map(b -> b.capacity)
-                .reduce(0, Integer::sum);
-    }
-
-    // ================= UC11 =================
-    public static boolean isValidTrainID(String trainId) {
-        return java.util.regex.Pattern.matches("TRN-\\d{4}", trainId);
-    }
-
-    public static boolean isValidCargoCode(String cargoCode) {
-        return java.util.regex.Pattern.matches("PET-[A-Z]{2}", cargoCode);
+    // ================= METHOD FOR TEST CASES =================
+    public static boolean isSafeComposition(List<GoodsBogie> goodsBogies) {
+        return goodsBogies.stream()
+                .allMatch(b ->
+                        !b.type.equalsIgnoreCase("Cylindrical") ||
+                                b.cargo.equalsIgnoreCase("Petroleum")
+                );
     }
 }
