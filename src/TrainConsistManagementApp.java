@@ -40,7 +40,7 @@ public class TrainConsistManagementApp {
 
         System.out.println("Unique Bogie IDs: " + bogieIds);
 
-        // UC4: LinkedList (Order)
+        // UC4: LinkedList (Order + Flexibility)
         System.out.println("\n--- UC4: Maintaining Ordered Train Consist ---");
 
         LinkedList<String> linkedTrain = new LinkedList<>();
@@ -51,6 +51,7 @@ public class TrainConsistManagementApp {
         linkedTrain.add("Guard");
 
         linkedTrain.add(2, "Pantry Car");
+
         linkedTrain.removeFirst();
         linkedTrain.removeLast();
 
@@ -60,29 +61,18 @@ public class TrainConsistManagementApp {
         System.out.println("\n--- UC5: Ordered Unique Train Formation ---");
 
         Set<String> formation = new LinkedHashSet<>();
+
+        // Add bogies
         formation.add("Engine");
         formation.add("Sleeper");
         formation.add("Cargo");
         formation.add("Guard");
-        formation.add("Sleeper"); // duplicate ignored
 
-        System.out.println("Final train formation: " + formation);
+        // Add duplicate intentionally
+        formation.add("Sleeper");
 
-        // UC6: HashMap (Bogie → Capacity)
-        System.out.println("\n--- UC6: Bogie Capacity Mapping ---");
-
-        Map<String, Integer> bogieCapacity = new HashMap<>();
-
-        // Insert bogie capacities
-        bogieCapacity.put("Sleeper", 72);
-        bogieCapacity.put("AC Chair", 50);
-        bogieCapacity.put("First Class", 24);
-
-        // Iterate using entrySet
-        System.out.println("Bogie Capacity Details:");
-        for (Map.Entry<String, Integer> entry : bogieCapacity.entrySet()) {
-            System.out.println(entry.getKey() + " -> Capacity: " + entry.getValue());
-        }
+        // Display final formation
+        System.out.println("Final train formation (no duplicates, ordered): " + formation);
 
         System.out.println("System ready for further operations.");
     }
