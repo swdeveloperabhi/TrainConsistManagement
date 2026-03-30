@@ -1,6 +1,6 @@
 import java.util.*;
 
-// Custom Bogie Class
+// Custom Bogie Class (UC7)
 class Bogie {
     String name;
     int capacity;
@@ -14,7 +14,7 @@ class Bogie {
     // toString() for clean output
     @Override
     public String toString() {
-        return name + " -> " + capacity;
+        return name + " -> Capacity: " + capacity;
     }
 }
 
@@ -106,16 +106,15 @@ public class TrainConsistManagementApp {
         List<Bogie> passengerBogies = new ArrayList<>();
 
         passengerBogies.add(new Bogie("Sleeper", 72));
-        passengerBogies.add(new Bogie("AC Chair", 56));
+        passengerBogies.add(new Bogie("AC Chair", 50));
         passengerBogies.add(new Bogie("First Class", 24));
-        passengerBogies.add(new Bogie("General", 90));
 
-        System.out.println("\nBefore Sorting:");
+        System.out.println("Before Sorting:");
         for (Bogie b : passengerBogies) {
             System.out.println(b);
         }
 
-        // Ascending
+        // Ascending order
         passengerBogies.sort(Comparator.comparingInt(b -> b.capacity));
 
         System.out.println("\nAfter Sorting (Ascending):");
@@ -123,7 +122,7 @@ public class TrainConsistManagementApp {
             System.out.println(b);
         }
 
-        // Descending
+        // Descending order
         passengerBogies.sort(Comparator.comparingInt((Bogie b) -> b.capacity).reversed());
 
         System.out.println("\nAfter Sorting (Descending):");
@@ -131,29 +130,6 @@ public class TrainConsistManagementApp {
             System.out.println(b);
         }
 
-        // UC8: Filter Passenger Bogies Using Streams
-        System.out.println("\n--- UC8: Filter Passenger Bogies Using Streams ---");
-
-        System.out.println("\nAll Bogies:");
-        for (Bogie b : passengerBogies) {
-            System.out.println(b);
-        }
-
-        List<Bogie> filteredBogies = filterBogiesByCapacity(passengerBogies, 60);
-
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        for (Bogie b : filteredBogies) {
-            System.out.println(b);
-        }
-
-        System.out.println("\nUC8 filtering completed...");
         System.out.println("\nSystem ready for further operations.");
-    }
-
-    // UC8 Method (IMPORTANT for test cases)
-    public static List<Bogie> filterBogiesByCapacity(List<Bogie> bogies, int threshold) {
-        return bogies.stream()
-                .filter(b -> b.capacity > threshold)
-                .toList(); // or collect(Collectors.toList()) for Java <16
     }
 }
