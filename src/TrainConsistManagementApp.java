@@ -3,61 +3,65 @@ import java.util.stream.*;
 
 public class TrainConsistManagementApp {
 
-    // ================= GoodsBogie Class =================
-    static class GoodsBogie {
+    // ================= Bogie =================
+    static class Bogie {
         String type;
-        String cargo;
+        int capacity;
 
-        GoodsBogie(String type, String cargo) {
+        Bogie(String type, int capacity) {
             this.type = type;
-            this.cargo = cargo;
-        }
-
-        @Override
-        public String toString() {
-            return type + " -> " + cargo;
+            this.capacity = capacity;
         }
     }
 
     public static void main(String[] args) {
 
-        System.out.println("==============================================");
-        System.out.println(" UC12 - Safety Compliance Check for Goods Bogies ");
-        System.out.println("==============================================\n");
+        System.out.println("=========================================");
+        System.out.println(" UC13 - Performance Comparison (Loops vs Streams) ");
+        System.out.println("=========================================\n");
 
-        // Create goods bogie list
-        List<GoodsBogie> goodsBogies = new ArrayList<>();
-
-        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        goodsBogies.add(new GoodsBogie("Open", "Coal"));
-        goodsBogies.add(new GoodsBogie("Box", "Grain"));
-        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
-
-        // Display bogies
-        System.out.println("Goods Bogies:");
-        for (GoodsBogie b : goodsBogies) {
-            System.out.println(b);
+        // Create large dataset
+        List<Bogie> bogies = new ArrayList<>();
+        for (int i = 0; i < 100000; i++) {
+            bogies.add(new Bogie("Sleeper", i % 100));
         }
 
-        // ===== SAFETY CHECK USING STREAM =====
-        boolean isSafe = goodsBogies.stream()
-                .allMatch(b ->
-                        !b.type.equalsIgnoreCase("Cylindrical") ||
-                                b.cargo.equalsIgnoreCase("Petroleum")
-                );
+        int threshold = 50;
 
-        // Display result
-        System.out.println("\nSafety Compliance Status: " + isSafe);
+        // ===== LOOP FILTER =====
+        long startLoop = System.nanoTime();
+        List<Bogie> loopResult = filterUsingLoop(bogies, threshold);
+        long endLoop = System.nanoTime();
 
-        System.out.println("\nUC12 safety validation completed...");
+        // ===== STREAM FILTER =====
+        long startStream = System.nanoTime();
+        List<Bogie> streamResult = filterUsingStream(bogies, threshold);
+        long endStream = System.nanoTime();
+
+        System.out.println("Loop Result Size: " + loopResult.size());
+        System.out.println("Stream Result Size: " + streamResult.size());
+
+        System.out.println("\nLoop Time: " + (endLoop - startLoop) + " ns");
+        System.out.println("Stream Time: " + (endStream - startStream) + " ns");
+
+        System.out.println("\nUC13 performance comparison completed...");
     }
 
-    // ================= METHOD FOR TEST CASES =================
-    public static boolean isSafeComposition(List<GoodsBogie> goodsBogies) {
-        return goodsBogies.stream()
-                .allMatch(b ->
-                        !b.type.equalsIgnoreCase("Cylindrical") ||
-                                b.cargo.equalsIgnoreCase("Petroleum")
-                );
+    // ================= LOOP METHOD =================
+    public static List<Bogie> filterUsingLoop(List<Bogie> bogies, int threshold) {
+        List<Bogie> result = new ArrayList<>();
+        for (Bogie b : bogies) {
+            if (b.capacity > threshold) {
+                result.add(b);
+            }
+        }
+        return result;
+    }
+
+    // ================= STREAM METHOD =================
+    public static List<Bogie> filterUsingStream(List<Bogie> bogies, int threshold) {
+        return bogies.stream()
+                .filter(b -> b.capacity > threshold)
+                .toList();
     }
 }
