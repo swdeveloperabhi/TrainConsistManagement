@@ -60,29 +60,22 @@ public class TrainConsistManagementApp {
         }
     }
 
-    // ===== UC16: Bubble Sort Method =====
+    // ===== UC16: Bubble Sort =====
     public static void bubbleSort(int[] arr) {
         int n = arr.length;
 
         for (int i = 0; i < n - 1; i++) {
-            // Optimization: track if swap happens
             boolean swapped = false;
 
             for (int j = 0; j < n - i - 1; j++) {
-
-                // Compare adjacent elements
                 if (arr[j] > arr[j + 1]) {
-
-                    // Swap
                     int temp = arr[j];
                     arr[j] = arr[j + 1];
                     arr[j + 1] = temp;
-
                     swapped = true;
                 }
             }
 
-            // If no swaps → already sorted
             if (!swapped) break;
         }
     }
@@ -96,11 +89,12 @@ public class TrainConsistManagementApp {
         List<PassengerBogie> passengerBogies = new ArrayList<>();
         List<GoodsBogie> goodsBogies = new ArrayList<>();
 
-        // ===== UC14 Logic =====
+        // ===== UC14 =====
         try {
             passengerBogies.add(new PassengerBogie("Sleeper", 72));
             passengerBogies.add(new PassengerBogie("AC Chair", 56));
             passengerBogies.add(new PassengerBogie("General", 60));
+            passengerBogies.add(new PassengerBogie("Luxury", 40));
 
             // Invalid example
             passengerBogies.add(new PassengerBogie("First Class", 0));
@@ -116,7 +110,7 @@ public class TrainConsistManagementApp {
         goodsBogies.add(g1);
         goodsBogies.add(g2);
 
-        // ===== UC15 Logic =====
+        // ===== UC15 =====
         for (GoodsBogie g : goodsBogies) {
             try {
                 if (g.shape.equals("Rectangular")) {
@@ -141,27 +135,38 @@ public class TrainConsistManagementApp {
             System.out.println(b);
         }
 
-        // ===== UC16: Extract capacities into array =====
+        // ===== UC16: Sort Capacities =====
         int[] capacities = new int[passengerBogies.size()];
         for (int i = 0; i < passengerBogies.size(); i++) {
             capacities[i] = passengerBogies.get(i).capacity;
         }
 
-        // ===== Apply Bubble Sort =====
         bubbleSort(capacities);
 
-        // ===== Display Sorted Capacities =====
         System.out.println("\nSorted Passenger Capacities (Bubble Sort):");
         for (int cap : capacities) {
             System.out.print(cap + " ");
         }
 
+        // ===== UC17: Sort Bogie Names using Arrays.sort() =====
+        String[] bogieNames = new String[passengerBogies.size()];
+        for (int i = 0; i < passengerBogies.size(); i++) {
+            bogieNames[i] = passengerBogies.get(i).type;
+        }
+
+        // Built-in sorting
+        Arrays.sort(bogieNames);
+
+        // Display sorted names
+        System.out.println("\n\nSorted Bogie Names (Arrays.sort):");
+        System.out.println(Arrays.toString(bogieNames));
+
         // ===== Goods Bogies =====
-        System.out.println("\n\nGoods Bogies:");
+        System.out.println("\nGoods Bogies:");
         for (GoodsBogie g : goodsBogies) {
             System.out.println(g);
         }
 
-        System.out.println("\nUC16 execution completed...");
+        System.out.println("\nUC17 execution completed...");
     }
 }
